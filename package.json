@@ -1,0 +1,16 @@
+{
+  "name": "aislide",
+  "version": "1.0.0",
+  "description": "JSON-driven consultant-style slide preview and PPTX generator",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "check": "node --check src/server.js && node --check src/slideEngine.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pptxgenjs": "^3.12.0"
+  }
+}
