@@ -1,7 +1,7 @@
 const defaultJson = {
   metadata: {
-    title: "Industry Deposit Trends — All SCBs",
-    author: "KPMG Strategy Team"
+    title: "Q2 Operating Review",
+    author: "Strategy Team"
   },
   page: {
     width: 1280,
@@ -11,63 +11,72 @@ const defaultJson = {
   elements: [
     {
       type: "text",
-      text: "India's deposit base crossed ₹240 lakh crore, but the mix is shifting fast",
+      text: "Q2 2026 Performance Review",
       x: 60,
-      y: 32,
-      width: 900,
-      height: 50,
-      fontSize: 28,
-      fontFamily: "Arial",
+      y: 36,
+      width: 700,
+      height: 60,
+      fontSize: 34,
       bold: true,
-      color: "#1F3A5F"
+      color: "#0F172A"
     },
     {
-      type: "callout",
-      value: "~540 bps",
-      label: "CASA ratio erosion in under 3 years (43.2% → 37.8%)",
-      x: 960,
-      y: 32,
-      width: 280,
-      height: 84,
-      background: "#F6B6C9",
-      valueFontSize: 28,
-      valueBold: true,
-      valueColor: "#FF4D8D",
-      labelFontSize: 11,
-      labelColor: "#444444",
-      fontFamily: "Arial",
-      borderRadius: 6,
-      padding: 14
+      type: "text",
+      text: "Revenue momentum continued while cost efficiency improved.",
+      x: 60,
+      y: 100,
+      width: 900,
+      height: 40,
+      fontSize: 18,
+      color: "#334155"
+    },
+    {
+      type: "kpi",
+      value: "$14.8M",
+      label: "Quarterly Revenue",
+      x: 60,
+      y: 170,
+      width: 250,
+      height: 120,
+      background: "#EEF2FF",
+      color: "#1E3A8A"
+    },
+    {
+      type: "kpi",
+      value: "19.4%",
+      label: "EBITDA Margin",
+      x: 330,
+      y: 170,
+      width: 250,
+      height: 120,
+      background: "#ECFDF5",
+      color: "#065F46"
     },
     {
       type: "chart",
-      chartType: "stackedBarPercent",
+      chartType: "bar",
       x: 60,
-      y: 130,
-      width: 700,
-      height: 340,
-      labels: ["Mar-23", "Sep-23", "Mar-24", "Sep-24", "Mar-25", "Sep-25", "Dec-25"],
-      series: [
-        {
-          name: "Term Deposits",
-          values: [56.9, 59.5, 59.5, 61.0, 61.1, 61.9, 62.1],
-          color: "#1F3A5F"
-        },
-        {
-          name: "Savings",
-          values: [32.9, 31.4, 30.6, 29.7, 28.9, 28.9, 28.9],
-          color: "#2F6BFF"
-        },
-        {
-          name: "Current Account",
-          values: [10.2, 9.1, 9.9, 9.2, 10.0, 9.2, 8.9],
-          color: "#5BC0EB"
-        }
-      ],
-      barTopLabels: {
-        enabled: true,
-        values: ["₹181.5L Cr", "₹192.6L Cr", "₹206.1L Cr", "₹214.8L Cr", "₹227.6L Cr", "₹235.7L Cr", "₹239.8L Cr"]
-      }
+      y: 320,
+      width: 760,
+      height: 300,
+      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+      values: [78, 84, 91, 103, 97, 112],
+      colors: ["#60A5FA", "#60A5FA", "#60A5FA", "#3B82F6", "#3B82F6", "#1D4ED8"]
+    },
+    {
+      type: "text",
+      text: "Key takeaways:\n• Pipeline conversion improved by 11%\n• CAC down 9% QoQ\n• Churn remains below target",
+      x: 860,
+      y: 320,
+      width: 360,
+      height: 300,
+      fontSize: 20,
+      lineHeight: 1.4,
+      background: "#F8FAFC",
+      border: "1px solid #CBD5E1",
+      borderRadius: 8,
+      padding: 16,
+      color: "#0F172A"
     }
   ]
 };
@@ -81,50 +90,9 @@ const status = document.getElementById("status");
 jsonInput.value = JSON.stringify(defaultJson, null, 2);
 let lastValidSpec = null;
 
-function parseLenientJson(raw) {
-  try {
-    return JSON.parse(raw);
-  } catch {
-    const start = raw.indexOf("{");
-    if (start === -1) throw new Error("No JSON object found.");
-
-    let depth = 0;
-    let inString = false;
-    let escaping = false;
-
-    for (let i = start; i < raw.length; i += 1) {
-      const ch = raw[i];
-      if (inString) {
-        if (escaping) {
-          escaping = false;
-        } else if (ch === "\\") {
-          escaping = true;
-        } else if (ch === '"') {
-          inString = false;
-        }
-        continue;
-      }
-
-      if (ch === '"') {
-        inString = true;
-      } else if (ch === "{") {
-        depth += 1;
-      } else if (ch === "}") {
-        depth -= 1;
-        if (depth === 0) {
-          const candidate = raw.slice(start, i + 1);
-          return JSON.parse(candidate);
-        }
-      }
-    }
-
-    throw new Error("Unable to parse a valid JSON object.");
-  }
-}
-
 previewBtn.addEventListener("click", async () => {
   try {
-    const payload = parseLenientJson(jsonInput.value);
+    const payload = JSON.parse(jsonInput.value);
     const response = await fetch("/api/preview", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
