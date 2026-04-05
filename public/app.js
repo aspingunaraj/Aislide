@@ -1,6 +1,7 @@
 const defaultJson = {
   metadata: {
     title: "Industry Deposit Trends — All SCBs",
+    author: "KPMG Strategy Team"
     author: "KPMG Strategy Team",
     source: "RBI Table No. 2.2"
   },
@@ -12,6 +13,7 @@ const defaultJson = {
   elements: [
     {
       type: "text",
+      text: "India's deposit base crossed ₹240 lakh crore, but the mix is shifting fast",
       text: "India's deposit base crossed \u20b9240 lakh crore, but the mix is shifting fast",
       x: 60,
       y: 32,
@@ -23,6 +25,9 @@ const defaultJson = {
       color: "#1F3A5F"
     },
     {
+      type: "callout",
+      value: "~540 bps",
+      label: "CASA ratio erosion in under 3 years (43.2% → 37.8%)",
       type: "text",
       text: "Deposit composition — All Scheduled Commercial Banks (Half-yearly, Mar-23 to Dec-25)",
       x: 60,
@@ -58,6 +63,28 @@ const defaultJson = {
       y: 130,
       width: 700,
       height: 340,
+      labels: ["Mar-23", "Sep-23", "Mar-24", "Sep-24", "Mar-25", "Sep-25", "Dec-25"],
+      series: [
+        {
+          name: "Term Deposits",
+          values: [56.9, 59.5, 59.5, 61.0, 61.1, 61.9, 62.1],
+          color: "#1F3A5F"
+        },
+        {
+          name: "Savings",
+          values: [32.9, 31.4, 30.6, 29.7, 28.9, 28.9, 28.9],
+          color: "#2F6BFF"
+        },
+        {
+          name: "Current Account",
+          values: [10.2, 9.1, 9.9, 9.2, 10.0, 9.2, 8.9],
+          color: "#5BC0EB"
+        }
+      ],
+      barTopLabels: {
+        enabled: true,
+        values: ["₹181.5L Cr", "₹192.6L Cr", "₹206.1L Cr", "₹214.8L Cr", "₹227.6L Cr", "₹235.7L Cr", "₹239.8L Cr"]
+      }
       fontFamily: "Arial",
       labels: ["Mar-23", "Sep-23", "Mar-24", "Sep-24", "Mar-25", "Sep-25", "Dec-25"],
       series: [
@@ -147,6 +174,50 @@ const status = document.getElementById("status");
 jsonInput.value = JSON.stringify(defaultJson, null, 2);
 let lastValidSpec = null;
 
+function parseLenientJson(raw) {
+  try {
+    return JSON.parse(raw);
+  } catch {
+    const start = raw.indexOf("{");
+    if (start === -1) throw new Error("No JSON object found.");
+
+    let depth = 0;
+    let inString = false;
+    let escaping = false;
+
+    for (let i = start; i < raw.length; i += 1) {
+      const ch = raw[i];
+      if (inString) {
+        if (escaping) {
+          escaping = false;
+        } else if (ch === "\\") {
+          escaping = true;
+        } else if (ch === '"') {
+          inString = false;
+        }
+        continue;
+      }
+
+      if (ch === '"') {
+        inString = true;
+      } else if (ch === "{") {
+        depth += 1;
+      } else if (ch === "}") {
+        depth -= 1;
+        if (depth === 0) {
+          const candidate = raw.slice(start, i + 1);
+          return JSON.parse(candidate);
+        }
+      }
+    }
+
+    throw new Error("Unable to parse a valid JSON object.");
+  }
+}
+
+previewBtn.addEventListener("click", async () => {
+  try {
+    const payload = parseLenientJson(jsonInput.value);
 previewBtn.addEventListener("click", async () => {
   try {
     const payload = JSON.parse(jsonInput.value);
