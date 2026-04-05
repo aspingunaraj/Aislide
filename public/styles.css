@@ -9,6 +9,8 @@ body {
   color: #111827;
 }
 
+/* ── App layout ──────────────────────────────────────────────────── */
+
 .layout {
   display: grid;
   grid-template-columns: 380px 1fr;
@@ -35,6 +37,7 @@ textarea {
   font-family: ui-monospace, Menlo, Monaco, Consolas, monospace;
   font-size: 12px;
   box-sizing: border-box;
+  resize: vertical;
 }
 
 .buttons {
@@ -70,44 +73,45 @@ button:disabled {
   border-radius: 8px;
 }
 
-/* ── Slide container ─────────────────────────────────────────── */
+/* ── Slide container ─────────────────────────────────────────────── */
 
 .slide {
   position: relative;
   box-shadow: 0 8px 30px rgba(17, 24, 39, 0.2);
 }
 
+/* ── Element base ────────────────────────────────────────────────── */
+
 .element {
   position: absolute;
   white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
-/* ── KPI ─────────────────────────────────────────────────────── */
+/* ── Text ────────────────────────────────────────────────────────── */
 
-.kpi {
+.el-text .text-content {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Callout / KPI ───────────────────────────────────────────────── */
+
+.el-callout,
+.el-kpi {
   display: flex;
   flex-direction: column;
   justify-content: center !important;
-  gap: 4px;
 }
 
-.kpi-value {
-  font-size: 28px;
-  font-weight: 700;
-}
-
-.kpi-label {
-  font-size: 12px;
-  opacity: 0.8;
-}
-
-/* ── Callout ─────────────────────────────────────────────────── */
-
-.callout {
+.callout-inner {
   display: flex;
   flex-direction: column;
-  justify-content: center !important;
+  justify-content: center;
   gap: 4px;
+  width: 100%;
+  height: 100%;
 }
 
 .callout-value {
@@ -118,21 +122,25 @@ button:disabled {
   line-height: 1.3;
 }
 
-/* ── Divider ─────────────────────────────────────────────────── */
+/* ── Divider ─────────────────────────────────────────────────────── */
 
-.divider-el {
+.el-divider {
   padding: 0 !important;
 }
 
-/* ── Chart container ─────────────────────────────────────────── */
+.divider-line {
+  display: block;
+}
 
-.chart-container {
+/* ── Chart container ─────────────────────────────────────────────── */
+
+.el-chart {
   display: flex;
   flex-direction: column;
   white-space: normal;
 }
 
-/* ── Bar chart (simple) ──────────────────────────────────────── */
+/* ── Bar chart ───────────────────────────────────────────────────── */
 
 .chart.bars {
   width: 100%;
@@ -151,7 +159,7 @@ button:disabled {
   height: 100%;
 }
 
-.bar-wrap span {
+.bar-wrap > span {
   font-size: 11px;
   margin-top: 6px;
 }
@@ -178,7 +186,7 @@ button:disabled {
   transform: translateX(-50%);
 }
 
-/* ── Pie chart ───────────────────────────────────────────────── */
+/* ── Pie ─────────────────────────────────────────────────────────── */
 
 .chart-pie-container {
   flex: 1;
@@ -194,7 +202,7 @@ button:disabled {
   max-height: 90%;
 }
 
-/* ── Donut chart ─────────────────────────────────────────────── */
+/* ── Donut ────────────────────────────────────────────────────────── */
 
 .chart.donut {
   width: 80%;
@@ -229,7 +237,7 @@ button:disabled {
   color: #777;
 }
 
-/* ── Stacked bar percent chart ───────────────────────────────── */
+/* ── Stacked bar ─────────────────────────────────────────────────── */
 
 .chart.stacked-percent,
 .chart.stacked-abs {
@@ -281,10 +289,7 @@ button:disabled {
 }
 
 .stacked-bar-wrap > .bar-top-label {
-  font-size: 10px;
-  color: #444;
   margin-bottom: 3px;
-  white-space: nowrap;
 }
 
 .stacked-bar-wrap > span {
@@ -311,7 +316,7 @@ button:disabled {
   opacity: 0.8;
 }
 
-/* ── Grouped bar chart ───────────────────────────────────────── */
+/* ── Grouped bar ─────────────────────────────────────────────────── */
 
 .chart.grouped-bars {
   width: 100%;
@@ -348,7 +353,7 @@ button:disabled {
   min-height: 2px;
 }
 
-/* ── Line chart ──────────────────────────────────────────────── */
+/* ── Line / Area chart ───────────────────────────────────────────── */
 
 .chart.line-chart {
   width: 100%;
@@ -368,7 +373,7 @@ button:disabled {
   padding-top: 4px;
 }
 
-/* ── Waterfall chart ─────────────────────────────────────────── */
+/* ── Waterfall chart ─────────────────────────────────────────────── */
 
 .chart.waterfall-chart {
   width: 100%;
@@ -388,8 +393,8 @@ button:disabled {
 }
 
 .waterfall-wrap > span {
-  font-size: 11px;
-  margin-top: 4px;
+  position: absolute;
+  bottom: 0;
 }
 
 .waterfall-bar {
@@ -398,7 +403,7 @@ button:disabled {
   border-radius: 3px;
 }
 
-/* ── Chart legend ────────────────────────────────────────────── */
+/* ── Chart legend ────────────────────────────────────────────────── */
 
 .chart-legend {
   display: flex;
@@ -408,9 +413,9 @@ button:disabled {
   justify-content: flex-start;
 }
 
-/* ── Table ────────────────────────────────────────────────────── */
+/* ── Table ────────────────────────────────────────────────────────── */
 
-.table-container {
+.el-table {
   overflow: auto;
   white-space: normal;
 }
@@ -418,10 +423,4 @@ button:disabled {
 .slide-table {
   border-collapse: collapse;
   width: 100%;
-}
-
-.slide-table th,
-.slide-table td {
-  padding: 5px 10px;
-  text-align: left;
 }

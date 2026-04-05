@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const PptxGenJS = require("pptxgenjs");
-const { normalizeSlideSpec, renderSlideHtml, toPptxSlide } = require("./slideEngine");
+const { normalizeSlideSpec, previewHtml, exportPptxSlide } = require("./engine/index");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 app.post("/api/preview", (req, res) => {
   try {
     const spec = normalizeSlideSpec(req.body);
-    const html = renderSlideHtml(spec);
+    const html = previewHtml(req.body);
     res.json({ ok: true, html, normalizedSpec: spec });
   } catch (error) {
     res.status(400).json({ ok: false, error: error.message });
@@ -42,13 +42,12 @@ app.post("/api/export", async (req, res) => {
     };
 
     slides.forEach((rawSlide) => {
-      const slideSpec = normalizeSlideSpec(rawSlide);
       const slide = pptx.addSlide();
-      toPptxSlide(slideSpec, slide, pptx);
+      exportPptxSlide(rawSlide, slide, pptx);
     });
 
     const fileName = `deck-${Date.now()}.pptx`;
-    const outputPath = path.join(__dirname, "..", "generated", fileName);
+    const outputPath = path.join(generatedDir, fileName);
     await pptx.writeFile({ fileName: outputPath });
 
     res.download(outputPath, fileName, (err) => {
