@@ -7,6 +7,9 @@ const { normalizeSlideSpec, renderSlideHtml, toPptxSlide } = require("./slideEng
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const generatedDir = path.join(__dirname, "..", "generated");
+if (!fs.existsSync(generatedDir)) fs.mkdirSync(generatedDir, { recursive: true });
+
 app.use(express.json({ limit: "2mb" }));
 app.use(express.static(path.join(__dirname, "..", "public")));
 
@@ -42,6 +45,7 @@ app.post("/api/export", async (req, res) => {
       const slideSpec = normalizeSlideSpec(rawSlide);
       const slide = pptx.addSlide();
       toPptxSlide(slideSpec, slide);
+      toPptxSlide(slideSpec, slide, pptx);
     });
 
     const fileName = `deck-${Date.now()}.pptx`;

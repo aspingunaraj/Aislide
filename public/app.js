@@ -2,6 +2,8 @@ const defaultJson = {
   metadata: {
     title: "Industry Deposit Trends — All SCBs",
     author: "KPMG Strategy Team"
+    author: "KPMG Strategy Team",
+    source: "RBI Table No. 2.2"
   },
   page: {
     width: 1280,
@@ -12,6 +14,7 @@ const defaultJson = {
     {
       type: "text",
       text: "India's deposit base crossed ₹240 lakh crore, but the mix is shifting fast",
+      text: "India's deposit base crossed \u20b9240 lakh crore, but the mix is shifting fast",
       x: 60,
       y: 32,
       width: 900,
@@ -25,6 +28,20 @@ const defaultJson = {
       type: "callout",
       value: "~540 bps",
       label: "CASA ratio erosion in under 3 years (43.2% → 37.8%)",
+      type: "text",
+      text: "Deposit composition — All Scheduled Commercial Banks (Half-yearly, Mar-23 to Dec-25)",
+      x: 60,
+      y: 86,
+      width: 900,
+      height: 30,
+      fontSize: 14,
+      fontFamily: "Arial",
+      color: "#777777"
+    },
+    {
+      type: "callout",
+      value: "~540 bps",
+      label: "CASA ratio erosion in under 3 years (43.2% \u2192 37.8%)",
       x: 960,
       y: 32,
       width: 280,
@@ -68,6 +85,82 @@ const defaultJson = {
         enabled: true,
         values: ["₹181.5L Cr", "₹192.6L Cr", "₹206.1L Cr", "₹214.8L Cr", "₹227.6L Cr", "₹235.7L Cr", "₹239.8L Cr"]
       }
+      fontFamily: "Arial",
+      labels: ["Mar-23", "Sep-23", "Mar-24", "Sep-24", "Mar-25", "Sep-25", "Dec-25"],
+      series: [
+        { name: "Term Deposits", values: [56.9, 59.5, 59.5, 61.0, 61.1, 61.9, 62.1], color: "#1F3A5F" },
+        { name: "Savings", values: [32.9, 31.4, 30.6, 29.7, 28.9, 28.9, 28.9], color: "#2F6BFF" },
+        { name: "Current Account", values: [10.2, 9.1, 9.9, 9.2, 10.0, 9.2, 8.9], color: "#5BC0EB" }
+      ],
+      barTopLabels: {
+        enabled: true,
+        values: ["\u20b9181.5L Cr", "\u20b9192.6L Cr", "\u20b9206.1L Cr", "\u20b9214.8L Cr", "\u20b9227.6L Cr", "\u20b9235.7L Cr", "\u20b9239.8L Cr"],
+        fontSize: 10,
+        color: "#444444",
+        fontFamily: "Arial"
+      },
+      legend: { position: "bottom", fontSize: 11, color: "#444444", fontFamily: "Arial" },
+      axisLabel: { fontSize: 11, color: "#777777", fontFamily: "Arial" },
+      gridLines: { color: "#E5E7EB", style: "dashed" }
+    },
+    {
+      type: "text",
+      text: "Point of View",
+      x: 790,
+      y: 130,
+      width: 450,
+      height: 30,
+      fontSize: 16,
+      fontFamily: "Arial",
+      bold: true,
+      color: "#1F3A5F"
+    },
+    {
+      type: "divider",
+      x: 790,
+      y: 160,
+      width: 450,
+      height: 2,
+      color: "#5BC0EB",
+      opacity: 0.4
+    },
+    {
+      type: "text",
+      text: "1",
+      x: 790,
+      y: 172,
+      width: 22,
+      height: 22,
+      fontSize: 12,
+      fontFamily: "Arial",
+      bold: true,
+      color: "#FFFFFF",
+      background: "#1F3A5F",
+      borderRadius: 11,
+      textAlign: "center"
+    },
+    {
+      type: "text",
+      text: "Term deposits are commanding the deposit mix — driven by rate-sensitive depositors chasing higher yields in an elevated interest rate environment.",
+      x: 820,
+      y: 168,
+      width: 420,
+      height: 60,
+      fontSize: 11,
+      fontFamily: "Arial",
+      lineHeight: 1.4,
+      color: "#444444"
+    },
+    {
+      type: "text",
+      text: "Source: RBI Table No. 2.2 | Note: Excludes inter-bank deposits",
+      x: 60,
+      y: 688,
+      width: 1160,
+      height: 20,
+      fontSize: 9,
+      fontFamily: "Arial",
+      color: "#777777"
     }
   ]
 };
@@ -125,6 +218,9 @@ function parseLenientJson(raw) {
 previewBtn.addEventListener("click", async () => {
   try {
     const payload = parseLenientJson(jsonInput.value);
+previewBtn.addEventListener("click", async () => {
+  try {
+    const payload = JSON.parse(jsonInput.value);
     const response = await fetch("/api/preview", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
