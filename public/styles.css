@@ -70,6 +70,8 @@ button:disabled {
   border-radius: 8px;
 }
 
+/* ── Slide container ─────────────────────────────────────────── */
+
 .slide {
   position: relative;
   box-shadow: 0 8px 30px rgba(17, 24, 39, 0.2);
@@ -80,7 +82,10 @@ button:disabled {
   white-space: pre-wrap;
 }
 
+/* ── KPI ─────────────────────────────────────────────────────── */
+
 .kpi {
+  display: flex;
   flex-direction: column;
   justify-content: center !important;
   gap: 4px;
@@ -96,9 +101,42 @@ button:disabled {
   opacity: 0.8;
 }
 
+/* ── Callout ─────────────────────────────────────────────────── */
+
+.callout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  gap: 4px;
+}
+
+.callout-value {
+  font-weight: 700;
+}
+
+.callout-label {
+  line-height: 1.3;
+}
+
+/* ── Divider ─────────────────────────────────────────────────── */
+
+.divider-el {
+  padding: 0 !important;
+}
+
+/* ── Chart container ─────────────────────────────────────────── */
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  white-space: normal;
+}
+
+/* ── Bar chart (simple) ──────────────────────────────────────── */
+
 .chart.bars {
   width: 100%;
-  height: 100%;
+  flex: 1;
   display: flex;
   align-items: flex-end;
   gap: 10px;
@@ -122,10 +160,268 @@ button:disabled {
   width: 65%;
   border-radius: 4px 4px 0 0;
   min-height: 4px;
+  position: relative;
+}
+
+.bar-top-label {
+  font-size: 10px;
+  color: #444;
+  text-align: center;
+  white-space: nowrap;
+  margin-bottom: 2px;
+}
+
+.bar .bar-top-label {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ── Pie chart ───────────────────────────────────────────────── */
+
+.chart-pie-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chart.pie {
+  width: 80%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  max-height: 90%;
+}
+
+/* ── Donut chart ─────────────────────────────────────────────── */
+
+.chart.donut {
+  width: 80%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  max-height: 90%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-hole {
+  width: 55%;
+  height: 55%;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1F3A5F;
+}
+
+.donut-label {
+  font-size: 10px;
+  color: #777;
+}
+
+/* ── Stacked bar percent chart ───────────────────────────────── */
+
+.chart.stacked-percent,
+.chart.stacked-abs {
+  width: 100%;
+  flex: 1;
+  position: relative;
+}
+
+.stacked-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.grid-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.grid-label {
+  position: absolute;
+  left: -28px;
+  top: -6px;
+}
+
+.stacked-bars-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+  padding-bottom: 24px;
+  box-sizing: border-box;
+}
+
+.stacked-bar-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.stacked-bar-wrap > .bar-top-label {
+  font-size: 10px;
+  color: #444;
+  margin-bottom: 3px;
+  white-space: nowrap;
+}
+
+.stacked-bar-wrap > span {
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.stacked-bar-col {
+  flex: 1;
+  width: 70%;
+  display: flex;
+  flex-direction: column-reverse;
+  border-radius: 3px 3px 0 0;
+  overflow: hidden;
+}
+
+.stacked-segment {
+  width: 100%;
+  min-height: 1px;
+  transition: opacity 0.15s;
+}
+
+.stacked-segment:hover {
+  opacity: 0.8;
+}
+
+/* ── Grouped bar chart ───────────────────────────────────────── */
+
+.chart.grouped-bars {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.grouped-bar-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.grouped-bar-wrap > span {
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.grouped-bar-group {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  width: 100%;
+}
+
+.grouped-bar {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  min-height: 2px;
+}
+
+/* ── Line chart ──────────────────────────────────────────────── */
+
+.chart.line-chart {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.line-svg {
+  flex: 1;
+  width: 100%;
+}
+
+.line-axis-labels {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+/* ── Waterfall chart ─────────────────────────────────────────── */
+
+.chart.waterfall-chart {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.waterfall-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+
+.waterfall-wrap > span {
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.waterfall-bar {
+  position: absolute;
+  width: 65%;
+  border-radius: 3px;
+}
+
+/* ── Chart legend ────────────────────────────────────────────── */
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 0;
+  padding-top: 6px;
+  justify-content: flex-start;
+}
+
+/* ── Table ────────────────────────────────────────────────────── */
+
+.table-container {
+  overflow: auto;
+  white-space: normal;
+}
+
+.slide-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.slide-table th,
+.slide-table td {
+  padding: 5px 10px;
+  text-align: left;
 }

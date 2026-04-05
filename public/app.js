@@ -1,7 +1,8 @@
 const defaultJson = {
   metadata: {
-    title: "Q2 Operating Review",
-    author: "Strategy Team"
+    title: "Industry Deposit Trends — All SCBs",
+    author: "KPMG Strategy Team",
+    source: "RBI Table No. 2.2"
   },
   page: {
     width: 1280,
@@ -11,72 +12,128 @@ const defaultJson = {
   elements: [
     {
       type: "text",
-      text: "Q2 2026 Performance Review",
+      text: "India's deposit base crossed \u20b9240 lakh crore, but the mix is shifting fast",
       x: 60,
-      y: 36,
-      width: 700,
-      height: 60,
-      fontSize: 34,
+      y: 32,
+      width: 900,
+      height: 50,
+      fontSize: 28,
+      fontFamily: "Arial",
       bold: true,
-      color: "#0F172A"
+      color: "#1F3A5F"
     },
     {
       type: "text",
-      text: "Revenue momentum continued while cost efficiency improved.",
+      text: "Deposit composition — All Scheduled Commercial Banks (Half-yearly, Mar-23 to Dec-25)",
       x: 60,
-      y: 100,
+      y: 86,
       width: 900,
-      height: 40,
-      fontSize: 18,
-      color: "#334155"
+      height: 30,
+      fontSize: 14,
+      fontFamily: "Arial",
+      color: "#777777"
     },
     {
-      type: "kpi",
-      value: "$14.8M",
-      label: "Quarterly Revenue",
-      x: 60,
-      y: 170,
-      width: 250,
-      height: 120,
-      background: "#EEF2FF",
-      color: "#1E3A8A"
-    },
-    {
-      type: "kpi",
-      value: "19.4%",
-      label: "EBITDA Margin",
-      x: 330,
-      y: 170,
-      width: 250,
-      height: 120,
-      background: "#ECFDF5",
-      color: "#065F46"
+      type: "callout",
+      value: "~540 bps",
+      label: "CASA ratio erosion in under 3 years (43.2% \u2192 37.8%)",
+      x: 960,
+      y: 32,
+      width: 280,
+      height: 84,
+      background: "#F6B6C9",
+      valueFontSize: 28,
+      valueBold: true,
+      valueColor: "#FF4D8D",
+      labelFontSize: 11,
+      labelColor: "#444444",
+      fontFamily: "Arial",
+      borderRadius: 6,
+      padding: 14
     },
     {
       type: "chart",
-      chartType: "bar",
+      chartType: "stackedBarPercent",
       x: 60,
-      y: 320,
-      width: 760,
-      height: 300,
-      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-      values: [78, 84, 91, 103, 97, 112],
-      colors: ["#60A5FA", "#60A5FA", "#60A5FA", "#3B82F6", "#3B82F6", "#1D4ED8"]
+      y: 130,
+      width: 700,
+      height: 340,
+      fontFamily: "Arial",
+      labels: ["Mar-23", "Sep-23", "Mar-24", "Sep-24", "Mar-25", "Sep-25", "Dec-25"],
+      series: [
+        { name: "Term Deposits", values: [56.9, 59.5, 59.5, 61.0, 61.1, 61.9, 62.1], color: "#1F3A5F" },
+        { name: "Savings", values: [32.9, 31.4, 30.6, 29.7, 28.9, 28.9, 28.9], color: "#2F6BFF" },
+        { name: "Current Account", values: [10.2, 9.1, 9.9, 9.2, 10.0, 9.2, 8.9], color: "#5BC0EB" }
+      ],
+      barTopLabels: {
+        enabled: true,
+        values: ["\u20b9181.5L Cr", "\u20b9192.6L Cr", "\u20b9206.1L Cr", "\u20b9214.8L Cr", "\u20b9227.6L Cr", "\u20b9235.7L Cr", "\u20b9239.8L Cr"],
+        fontSize: 10,
+        color: "#444444",
+        fontFamily: "Arial"
+      },
+      legend: { position: "bottom", fontSize: 11, color: "#444444", fontFamily: "Arial" },
+      axisLabel: { fontSize: 11, color: "#777777", fontFamily: "Arial" },
+      gridLines: { color: "#E5E7EB", style: "dashed" }
     },
     {
       type: "text",
-      text: "Key takeaways:\n• Pipeline conversion improved by 11%\n• CAC down 9% QoQ\n• Churn remains below target",
-      x: 860,
-      y: 320,
-      width: 360,
-      height: 300,
-      fontSize: 20,
+      text: "Point of View",
+      x: 790,
+      y: 130,
+      width: 450,
+      height: 30,
+      fontSize: 16,
+      fontFamily: "Arial",
+      bold: true,
+      color: "#1F3A5F"
+    },
+    {
+      type: "divider",
+      x: 790,
+      y: 160,
+      width: 450,
+      height: 2,
+      color: "#5BC0EB",
+      opacity: 0.4
+    },
+    {
+      type: "text",
+      text: "1",
+      x: 790,
+      y: 172,
+      width: 22,
+      height: 22,
+      fontSize: 12,
+      fontFamily: "Arial",
+      bold: true,
+      color: "#FFFFFF",
+      background: "#1F3A5F",
+      borderRadius: 11,
+      textAlign: "center"
+    },
+    {
+      type: "text",
+      text: "Term deposits are commanding the deposit mix — driven by rate-sensitive depositors chasing higher yields in an elevated interest rate environment.",
+      x: 820,
+      y: 168,
+      width: 420,
+      height: 60,
+      fontSize: 11,
+      fontFamily: "Arial",
       lineHeight: 1.4,
-      background: "#F8FAFC",
-      border: "1px solid #CBD5E1",
-      borderRadius: 8,
-      padding: 16,
-      color: "#0F172A"
+      color: "#444444"
+    },
+    {
+      type: "text",
+      text: "Source: RBI Table No. 2.2 | Note: Excludes inter-bank deposits",
+      x: 60,
+      y: 688,
+      width: 1160,
+      height: 20,
+      fontSize: 9,
+      fontFamily: "Arial",
+      color: "#777777"
     }
   ]
 };
