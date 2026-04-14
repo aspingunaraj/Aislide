@@ -54,7 +54,6 @@ function normalizeSlideSpec(rawSpec) {
   const page = rawSpec.page || {};
   return {
     title: rawSpec.title || rawSpec.metadata?.title || "Consulting Slide",
-    title: rawSpec.title || "Consulting Slide",
     subtitle: rawSpec.subtitle || "",
     width: sanitizeNumber(page.width, DEFAULT_WIDTH),
     height: sanitizeNumber(page.height, DEFAULT_HEIGHT),
@@ -84,9 +83,6 @@ function cssBox(element) {
   const w = sanitizeNumber(element.width, 100);
   const h = sanitizeNumber(element.height, 40);
   const fontSize = sanitizeNumber(element.fontSize, 20);
-  const textAlign = element.textAlign || element.align || "left";
-
-  const style = [
   const align = resolveAlign(element);
   const fontFamily = resolveFontFamily(element);
 
@@ -97,7 +93,6 @@ function cssBox(element) {
     `width:${w}px`,
     `height:${h}px`,
     `font-size:${fontSize}px`,
-    `font-family:${element.fontFamily || "Arial, sans-serif"}`,
     `font-family:${fontFamily},sans-serif`,
     `font-weight:${element.bold ? "700" : "400"}`,
     `color:${element.color || "#111827"}`,
@@ -106,11 +101,11 @@ function cssBox(element) {
     `border-radius:${sanitizeNumber(element.borderRadius, 0)}px`,
     `padding:${sanitizeNumber(element.padding, 4)}px`,
     `line-height:${sanitizeNumber(element.lineHeight, 1.2)}`,
-    `text-align:${textAlign}`,
+    `text-align:${align}`,
     "display:flex",
     `align-items:${element.verticalAlign || "flex-start"}`,
     `justify-content:${
-      textAlign === "center" ? "center" : textAlign === "right" ? "flex-end" : "flex-start"
+      align === "center" ? "center" : align === "right" ? "flex-end" : "flex-start"
     }`,
     "box-sizing:border-box",
     "overflow:hidden",
@@ -120,17 +115,6 @@ function cssBox(element) {
   if (element.shadow) style.push("box-shadow:0 6px 18px rgba(0,0,0,0.15)");
   if (element.zIndex != null) style.push(`z-index:${sanitizeNumber(element.zIndex, 1)}`);
   if (element.style && typeof element.style === "object") style.push(toCssStyle(element.style));
-    `text-align:${align}`,
-    `box-sizing:border-box`,
-    `overflow:hidden`
-  ];
-
-  if (element.opacity !== undefined) {
-    style.push(`opacity:${sanitizeNumber(element.opacity, 1)}`);
-  }
-  if (element.shadow) {
-    style.push("box-shadow:0 6px 18px rgba(0,0,0,0.15)");
-  }
 
   return style.join(";");
 }
@@ -791,6 +775,10 @@ function toPptxSlide(slideSpec, slide, pptx) {
         h: Math.max(h, 0.01),
         line: { pt: 0, color: toPptColor(element.color || "#CBD5E1") },
         fill: { color: toPptColor(element.color || "#CBD5E1"), transparency: 100 - sanitizeNumber(element.opacity, 1) * 100 }
+      });
+      return;
+    }
+
     const fontFamily = resolveFontFamily(element, "Aptos");
 
     const type = element.type || "text";
@@ -932,6 +920,10 @@ function toPptxSlide(slideSpec, slide, pptx) {
         showLegend: true,
         fontFace: element.fontFamily || "Arial",
         chartColors: series.map((s) => toPptColor(s.color || "#2563EB"))
+      });
+      return;
+    }
+
     /* ── Callout ──────────────────────────────────────────────── */
     if (type === "callout") {
       slide.addShape(ShapeType.roundRect, {
@@ -1041,46 +1033,6 @@ function toPptxSlide(slideSpec, slide, pptx) {
     }
 
     addTextBox(slide, element, x, y, w, h);
-  });
-}
-
-function mapVAlign(val) {
-  if (val === "center") return "mid";
-  if (val === "flex-end" || val === "bottom") return "down";
-  return "top";
-}
-
-function toPptColor(color) {
-  if (!color || color === "transparent") return "FFFFFF";
-  return String(color).replace("#", "").toUpperCase();
-}
-
-function pxToInches(px) {
-  return sanitizeNumber(px) / 96;
-}
-
-    /* ── Text (default) ──────────────────────────────────────── */
-    if (element.background || element.border) {
-      slide.addShape(ShapeType.roundRect, {
-        x, y, w, h,
-        fill: { color: toPptColor(element.background || "transparent") },
-        line: {
-          color: toPptColor((element.borderColor || "#CBD5E1").replace("#", "")),
-          pt: sanitizeNumber(element.borderWidth, element.border ? 1 : 0)
-        },
-        radius: sanitizeNumber(element.borderRadius, 0) / 72
-      });
-    }
-
-    slide.addText(String(element.text || ""), {
-      x, y, w, h,
-      bold: Boolean(element.bold),
-      fontSize: sanitizeNumber(element.fontSize, 18),
-      color: toPptColor(element.color || "#111827"),
-      align: resolveAlign(element),
-      valign: mapVAlign(element.verticalAlign),
-      fontFace: fontFamily
-    });
   });
 }
 

@@ -44,7 +44,6 @@ app.post("/api/export", async (req, res) => {
     slides.forEach((rawSlide) => {
       const slideSpec = normalizeSlideSpec(rawSlide);
       const slide = pptx.addSlide();
-      toPptxSlide(slideSpec, slide);
       toPptxSlide(slideSpec, slide, pptx);
     });
 
